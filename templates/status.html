@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>📊 Floor Map</h1>
+  <p class="subtitle">Live occupancy across all floors &mdash; {{ summary.occupied_slots }} Occupied · {{ summary.vacant_slots }} Vacant</p>
+</div>
+
+<!-- Floor Legend -->
+<div class="legend">
+  <span class="legend-item"><span class="dot dot-occupied"></span> Occupied</span>
+  <span class="legend-item"><span class="dot dot-vacant"></span> Vacant</span>
+</div>
+
+{% for floor_num, slots in floor_data.items() %}
+<div class="floor-section">
+  <h2 class="floor-title">Floor {{ floor_num }}</h2>
+  <div class="slots-grid">
+    {% for s in slots %}
+    <div class="slot-card {% if s.is_occupied %}slot-occupied{% else %}slot-vacant{% endif %}">
+      <div class="slot-id">{{ s.slot_id }}</div>
+      <div class="slot-type">{{ s.slot_type.value }}</div>
+      {% if s.is_occupied %}
+        <div class="slot-plate">🚘 {{ s.current_vehicle.license_plate }}</div>
+      {% else %}
+        <div class="slot-dist">📍 {{ s.distance_from_gate | int }}m</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

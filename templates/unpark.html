@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>🏁 Checkout Vehicle</h1>
+  <p class="subtitle">Enter the license plate to unpark and generate a receipt</p>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    <div class="form-group">
+      <label for="plate">Vehicle Number</label>
+      <input type="text" id="plate" name="plate"
+             placeholder="e.g. AP 16 AX 8921"
+             required maxlength="15" autocomplete="off" />
+      <div class="input-hint">e.g. <strong>AP 16 AX 8921</strong> — any case accepted</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Checkout →</button>
+  </form>
+</div>
+
+{% if error %}
+<div class="alert alert-error">❌ {{ error }}</div>
+{% endif %}
+
+{% if receipt %}
+<div class="result-card success">
+  <div class="result-header">🧾 Parking Receipt</div>
+  <div class="result-grid">
+    <div class="result-item">
+      <div class="result-label">Ticket ID</div>
+      <div class="result-value highlight">{{ receipt.ticket_id }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">License Plate</div>
+      <div class="result-value">{{ receipt.license_plate }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Vehicle Type</div>
+      <div class="result-value">{{ receipt.vehicle_type }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Slot</div>
+      <div class="result-value slot-badge">{{ receipt.slot_id }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Entry Time</div>
+      <div class="result-value">{{ receipt.entry_time }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Exit Time</div>
+      <div class="result-value">{{ receipt.exit_time }}</div>
+    </div>
+    <div class="result-item" style="grid-column: 1 / -1;">
+      <div class="result-label">Duration</div>
+      <div class="result-value highlight">{{ receipt.duration_display }}</div>
+    </div>
+  </div>
+  <p class="slot-note">✅ Slot <strong>{{ receipt.slot_id }}</strong> is now vacant and returned to the pool.</p>
+</div>
+{% endif %}
+
+{% endblock %}

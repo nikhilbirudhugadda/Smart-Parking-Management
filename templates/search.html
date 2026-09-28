@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>🔍 Search Vehicle</h1>
+  <p class="subtitle">Instant O(log n) lookup using AVL Tree indexed by license plate</p>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    <div class="form-group">
+      <label for="plate">Vehicle Number</label>
+      <input type="text" id="plate" name="plate" value="{{ plate_query }}"
+             placeholder="e.g. AP 16 AX 8921"
+             required maxlength="15" autocomplete="off" />
+      <div class="input-hint">e.g. <strong>AP 16 AX 8921</strong> — any case accepted</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search →</button>
+  </form>
+</div>
+
+{% if error %}
+<div class="alert alert-error">❌ {{ error }}</div>
+{% endif %}
+
+{% if searched and not error %}
+  {% if record %}
+  <div class="result-card success">
+    <div class="result-header">✅ Vehicle Found</div>
+    <div class="result-grid">
+      <div class="result-item">
+        <div class="result-label">Ticket ID</div>
+        <div class="result-value highlight">{{ record.ticket_id }}</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">License Plate</div>
+        <div class="result-value">{{ record.license_plate }}</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Vehicle Type</div>
+        <div class="result-value">{{ record.vehicle_type }}</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Parked In</div>
+        <div class="result-value slot-badge">{{ record.slot_id }}</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Floor</div>
+        <div class="result-value">Floor {{ record.floor }}</div>
+      </div>
+      <div class="result-item" style="grid-column: 1 / -1;">
+        <div class="result-label">Entry Time</div>
+        <div class="result-value">{{ record.entry_time }}</div>
+      </div>
+    </div>
+    <a href="{{ url_for('unpark') }}" class="btn btn-secondary" style="margin-top:1.2rem;">Checkout this Vehicle →</a>
+  </div>
+  {% else %}
+  <div class="alert alert-error">❌ Vehicle <strong>{{ plate_query }}</strong> is not currently parked in this facility.</div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

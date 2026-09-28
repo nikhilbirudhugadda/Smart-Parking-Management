@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartPark</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ build_ts }}"/>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-brand" href="{{ url_for('index') }}">🅿️ SmartPark</a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}" {% if request.endpoint=='index' %}class="active"{% endif %}>Dashboard</a></li>
+      <li><a href="{{ url_for('park') }}" {% if request.endpoint=='park' %}class="active"{% endif %}>Park</a></li>
+      <li><a href="{{ url_for('unpark') }}" {% if request.endpoint=='unpark' %}class="active"{% endif %}>Checkout</a></li>
+      <li><a href="{{ url_for('search') }}" {% if request.endpoint=='search' %}class="active"{% endif %}>Search</a></li>
+      <li><a href="{{ url_for('status') }}" {% if request.endpoint=='status' %}class="active"{% endif %}>Floor Map</a></li>
+      <li><a href="{{ url_for('overtime') }}" {% if request.endpoint=='overtime' %}class="active"{% endif %}>Overtime</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    Smart Parking Management System &mdash; Powered by AVL Tree · Min-Heap · B-Tree · Graph BFS
+  </footer>
+</body>
+</html>

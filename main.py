@@ -91,7 +91,6 @@ def menu_park_vehicle(manager: ParkingManager):
     print(f"\n{Colors.GREEN}{Colors.BOLD}✅ Vehicle Successfully Parked!{Colors.RESET}")
     print(f"  * Ticket ID:       {result['ticket_id']}")
     print(f"  * Allocated Slot:  {Colors.BOLD}{result['slot_id']}{Colors.RESET} (Floor {result['floor']}, Type: {result['slot_type']})")
-    print(f"  * Distance:        {result['distance_meters']} meters")
     print(f"  * Entry Timestamp: {result['entry_time']}")
 
 
@@ -117,7 +116,7 @@ def menu_unpark_vehicle(manager: ParkingManager):
     print(f"  Vacated Slot:     {rec['slot_id']}")
     print(f"  Entry Time:       {rec['entry_time']}")
     print(f"  Exit Time:        {rec['exit_time']}")
-    print(f"  Duration:         {rec['duration_hours']} hours")
+    print(f"  Duration:         {rec.get('duration_display', str(rec['duration_hours']) + ' hours')}")
     print(f"{Colors.GREEN}================================================={Colors.RESET}")
     print(f"ℹ️ Slot '{rec['slot_id']}' is now vacant.")
 

@@ -21,6 +21,29 @@ from structures.max_heap import MaxHeap
 from structures.min_heap import MinHeap
 
 
+def format_duration(duration_seconds: float) -> str:
+    """
+    Format duration based on length of stay:
+      - First 60 minutes (< 3600 seconds): display in minutes, e.g. '1 min', '25 mins'.
+      - After 60 minutes (>= 3600 seconds): display in hours, e.g. '1 hr', '1.5 hrs', '2 hrs'.
+    """
+    total_seconds = max(0.0, float(duration_seconds))
+    if total_seconds < 3600:
+        mins = int(round(total_seconds / 60.0))
+        if mins <= 1:
+            return "1 min"
+        return f"{mins} mins"
+    else:
+        hours = total_seconds / 3600.0
+        rounded_hours = round(hours, 2)
+        if rounded_hours.is_integer() or round(rounded_hours, 1) == int(rounded_hours):
+            val = int(rounded_hours)
+            return f"{val} hr" if val == 1 else f"{val} hrs"
+        if round(rounded_hours, 1) == rounded_hours:
+            return f"{rounded_hours:.1f} hrs"
+        return f"{rounded_hours:.2f} hrs"
+
+
 class ParkingManager:
     """
     Central Controller for the Smart Parking System.
@@ -181,6 +204,7 @@ class ParkingManager:
         if exit_time is None:
             exit_time = datetime.now()
         vehicle = slot.current_vehicle
+        duration_seconds = max(0.0, (exit_time - vehicle.entry_time).total_seconds())
         duration_hours, fee = vehicle.calculate_fee(exit_time)
 
         # 3. Vacate slot and push back onto Min-Heap
@@ -199,6 +223,7 @@ class ParkingManager:
             "entry_time": ticket_record["entry_time"],
             "exit_time": exit_time.isoformat(),
             "duration_hours": duration_hours,
+            "duration_display": format_duration(duration_seconds),
             "fee_paid": fee,
         }
         self.audit_btree.insert(receipt["ticket_id"], receipt)
@@ -237,7 +262,7 @@ class ParkingManager:
             duration_sec = (now - entry_dt).total_seconds()
             enriched_record = dict(record)
             enriched_record["duration_seconds"] = duration_sec
-            enriched_record["duration_formatted"] = f"{duration_sec / 3600.0:.2f} hrs"
+            enriched_record["duration_formatted"] = format_duration(duration_sec)
             max_heap.push(enriched_record)
 
         results: List[Dict[str, Any]] = []

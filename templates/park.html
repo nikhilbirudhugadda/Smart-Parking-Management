@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>🚗 Park a Vehicle</h1>
+  <p class="subtitle">Enter details below to allocate the closest available slot</p>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    <div class="form-group">
+      <label for="plate">Vehicle Number</label>
+      <input type="text" id="plate" name="plate"
+             placeholder="e.g. AP 16 AX 8921"
+             required maxlength="15" autocomplete="off" />
+      <div class="input-hint">
+        Format: <strong>STATE · DISTRICT · SERIES · NUMBER</strong>
+        &nbsp;e.g. <strong>AP 16 AX 8921</strong> — any case, spaces optional
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Vehicle Type</label>
+      <div class="radio-grid">
+        <label class="radio-card">
+          <input type="radio" name="vehicle_type" value="CAR" checked />
+          <span class="radio-icon">🚗</span>
+          <span>Car</span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="vehicle_type" value="MOTORCYCLE" />
+          <span class="radio-icon">🏍️</span>
+          <span>Motorcycle</span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="vehicle_type" value="ELECTRIC" />
+          <span class="radio-icon">⚡</span>
+          <span>Electric (EV)</span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="vehicle_type" value="TRUCK" />
+          <span class="radio-icon">🚛</span>
+          <span>Truck</span>
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Allocate Slot →</button>
+  </form>
+</div>
+
+{% if error %}
+<div class="alert alert-error">❌ {{ error }}</div>
+{% endif %}
+
+{% if result %}
+<div class="result-card success">
+  <div class="result-header">✅ Vehicle Successfully Parked!</div>
+  <div class="result-grid">
+    <div class="result-item">
+      <div class="result-label">Ticket ID</div>
+      <div class="result-value highlight">{{ result.ticket_id }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">License Plate</div>
+      <div class="result-value">{{ result.license_plate }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Allocated Slot</div>
+      <div class="result-value slot-badge">{{ result.slot_id }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Floor</div>
+      <div class="result-value">Floor {{ result.floor }}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Slot Type</div>
+      <div class="result-value">{{ result.slot_type }}</div>
+    </div>
+    <div class="result-item" style="grid-column: 1 / -1;">
+      <div class="result-label">Entry Time</div>
+      <div class="result-value">{{ result.entry_time }}</div>
+    </div>
+  </div>
+  <a href="{{ url_for('status') }}" class="btn btn-secondary" style="margin-top:1.2rem;">View Floor Map →</a>
+</div>
+{% endif %}
+
+{% endblock %}

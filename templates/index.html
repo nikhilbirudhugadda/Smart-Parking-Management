@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>🅿️ Smart Parking Management System</h1>
+  <p class="subtitle">Real-time parking powered by Min-Heap · AVL Tree · B-Tree · Graph + BFS</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">🏢</div>
+    <div class="stat-number">{{ summary.total_slots }}</div>
+    <div class="stat-label">Total Bays</div>
+  </div>
+  <div class="stat-card stat-occupied">
+    <div class="stat-icon">🔴</div>
+    <div class="stat-number">{{ summary.occupied_slots }}</div>
+    <div class="stat-label">Occupied</div>
+  </div>
+  <div class="stat-card stat-vacant">
+    <div class="stat-icon">🟢</div>
+    <div class="stat-number">{{ summary.vacant_slots }}</div>
+    <div class="stat-label">Vacant</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🏗️</div>
+    <div class="stat-number">2</div>
+    <div class="stat-label">Floors</div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<h2 class="section-title">Quick Actions</h2>
+<div class="action-grid">
+  <a href="{{ url_for('park') }}" class="action-card action-park">
+    <div class="action-icon">🚗</div>
+    <div class="action-title">Park a Vehicle</div>
+    <div class="action-desc">Allocate nearest slot via Min-Heap</div>
+  </a>
+  <a href="{{ url_for('unpark') }}" class="action-card action-checkout">
+    <div class="action-icon">🏁</div>
+    <div class="action-title">Checkout Vehicle</div>
+    <div class="action-desc">Unpark and generate receipt</div>
+  </a>
+  <a href="{{ url_for('search') }}" class="action-card action-search">
+    <div class="action-icon">🔍</div>
+    <div class="action-title">Search Vehicle</div>
+    <div class="action-desc">O(log n) AVL Tree lookup</div>
+  </a>
+  <a href="{{ url_for('status') }}" class="action-card action-map">
+    <div class="action-icon">📊</div>
+    <div class="action-title">Floor Map</div>
+    <div class="action-desc">View all slots live</div>
+  </a>
+</div>
+
+<!-- Algo Info -->
+<h2 class="section-title">How It Works</h2>
+<div class="algo-grid">
+  <div class="algo-card">
+    <div class="algo-badge">Min-Heap</div>
+    <p>Nearest vacant slot extracted in O(log n). Slot with smallest gate distance is always at the root.</p>
+  </div>
+  <div class="algo-card">
+    <div class="algo-badge">AVL Tree</div>
+    <p>License plates indexed in a self-balancing BST. Guarantees O(log n) search regardless of insertion order.</p>
+  </div>
+  <div class="algo-card">
+    <div class="algo-badge">B-Tree</div>
+    <p>Completed transaction receipts stored in a disk-optimized multi-way search tree for audit trails.</p>
+  </div>
+  <div class="algo-card">
+    <div class="algo-badge">Graph + BFS</div>
+    <p>Parking lot is a weighted graph. BFS computes the shortest lane-by-lane path from entrance to bay.</p>
+  </div>
+</div>
+
+{% endblock %}

@@ -2,19 +2,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run Smart Parking (Interactive)",
+      "name": "Run SmartPark Website",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/app.py",
+      "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "console": "integratedTerminal",
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Running on (http://127\\.0\\.0\\.1:\\d+)",
+        "uriFormat": "%s"
+      }
+    },
+    {
+      "name": "Run CLI (main.py)",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/main.py",
       "console": "integratedTerminal"
-    },
-    {
-      "name": "Run Automated Tests",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/test_smart_parking.py",
-      "console": "integratedTerminal"
     }
   ]
 }
-
